@@ -1,35 +1,35 @@
 #include "MPU6050.h"
-#include "Arduino_LSM9DS1.h"
-//#include "LSM9DS1.h"
 #define PI 3.14159
-#define CALIB 6
+#define PIN_CALIB 6
 
-// genera un objeto de la case MPU6050 
-// con la dirección I2C predeterminada
-//MPU6050 h;
+// genera un objeto de la case MPU6050 con la dirección I2C predeterminada
 MPU6050 inclinometro;
+
 bool conectado = false;
 bool calib_stat = false;
 const uint8_t anguloLimite = 40;
 int factorSensibilidad = 16384; //factor para una sensibilidad +-2g
 float gZ;
+
 void setup() {
-  pinMode(CALIB, INPUT);
+  pinMode(PIN_CALIB, INPUT);
   // // inicializa y conecta con el inclinómetro
    Serial.begin(38400);
    inclinometro.initialize();
    conectado = inclinometro.testConnection();
+   Serial.println("Iniciado.");
+   delay(300);
 }
 
 void loop() {
   if (!conectado) return;
 
   //Debouncing simple para el botón de calibración
-  if (digitalRead(CALIB) && !calib_stat){
+  if (digitalRead(PIN_CALIB) && !calib_stat){
     //Funcion de calibrar
     calib_stat = true;
   }
-  if(!digitalRead(CALIB) && calib_stat){
+  if(!digitalRead(PIN_CALIB) && calib_stat){
     calib_stat = false;
   }
 
@@ -40,7 +40,7 @@ void loop() {
   if(gZ < sin(float(90-anguloLimite)*2*PI/360)){
     Serial.println("Se murió :c");
   }
-  //EL VALOR DE Y DEL ACELEROMETRO DEBE VALER 
+  //EL VALOR DE Y DEL ACELEROMETRO DEBE VALER //debe valer qué??
   
   // put your main code here, to run repeatedly:
   
