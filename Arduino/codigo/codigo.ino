@@ -1,20 +1,4 @@
 #include "MPU6050.h"
-<<<<<<< Updated upstream
-#define PI 3.14159
-#define PIN_CALIB 6
-
-// genera un objeto de la case MPU6050 con la dirección I2C predeterminada
-MPU6050 inclinometro;
-
-bool conectado = false;
-bool calib_stat = false;
-const uint8_t anguloLimite = 40;
-int factorSensibilidad = 16384; //factor para una sensibilidad +-2g
-float gZ;
-
-void setup() {
-  pinMode(PIN_CALIB, INPUT);
-=======
 #include "Arduino_LSM9DS1.h"
 #include <Servo.h>
 #include <math.h>
@@ -49,36 +33,22 @@ void setup() {
   pinMode(IN, INPUT_PULLUP);
   compuerta.attach(PINS);
   compuerta.write(0);
->>>>>>> Stashed changes
   // // inicializa y conecta con el inclinómetro
    Serial.begin(38400);
    conectado = inclinometro.testConnection();
-<<<<<<< Updated upstream
-   Serial.println("Iniciado.");
-   delay(300);
-=======
    inclinometro.initialize();
    inclinometro.setFullScaleAccelRange(MPU6050_ACCEL_FS_16);
->>>>>>> Stashed changes
 }
 
 void loop() {
   if (!conectado) return;   //si no está conectado no hace nada (mandar error?)
   //Debouncing simple para el botón de calibración
-<<<<<<< Updated upstream
-  if (digitalRead(PIN_CALIB) && !calib_stat){
-    //Funcion de calibrar
-    calib_stat = true;
-  }
-  if(!digitalRead(PIN_CALIB) && calib_stat){
-=======
   if (!digitalRead(CALIB) && !calib_stat){
     //Calibra la nueva referencia 
     calibrarReferencia(&inclinometro);
     calib_stat = true;
   }
   if(digitalRead(CALIB) && calib_stat){
->>>>>>> Stashed changes
     calib_stat = false;
   }
 
@@ -103,9 +73,6 @@ void loop() {
       compuerta.detach();   
     }
   }
-<<<<<<< Updated upstream
-  //EL VALOR DE Y DEL ACELEROMETRO DEBE VALER //debe valer qué??
-=======
   
 
   // if(gZ < sin(float(90-anguloLimite)*2*PI/360)){
@@ -115,7 +82,6 @@ void loop() {
   //   digitalWrite(OUT, HIGH);  //puerta cerrada
   // }
   //EL VALOR DE Y DEL ACELEROMETRO DEBE VALER 
->>>>>>> Stashed changes
   
   // put your main code here, to run repeatedly:
   
