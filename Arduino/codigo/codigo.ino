@@ -3,7 +3,6 @@
 #include <Servo.h>
 #include <math.h>
 //#include "LSM9DS1.h"
-#define PI 3.14159
 #define CALIB 5
 #define OUT 7
 #define IN 8
@@ -18,7 +17,11 @@ MPU6050 inclinometro;
 bool conectado = false,
      calib_stat = false,
      puerta = open;
+//Angulo permisible respecto a la vertical
 uint8_t anguloLimite = 40;
+uint8_t anguloINF = 0;
+uint8_t anguloSUP = 40;
+uint8_t bonito = 2;
 const int factorSensibilidad = 2048; //factor para una sensibilidad +-16g
 float gX, gY, gZ;
 
@@ -32,12 +35,15 @@ void setup() {
   pinMode(OUT, OUTPUT);
   pinMode(IN, INPUT_PULLUP);
   compuerta.attach(PINS);
-  compuerta.write(0);
+  compuerta.write(90+bonito);
   // // inicializa y conecta con el inclinómetro
    Serial.begin(38400);
    conectado = inclinometro.testConnection();
    inclinometro.initialize();
    inclinometro.setFullScaleAccelRange(MPU6050_ACCEL_FS_16);
+   compuerta.detach();
+   //leemos los valores de los ángulos límite guardados en la EEPROM
+
 }
 
 void loop() {
@@ -53,9 +59,9 @@ void loop() {
   }
 
   if (puerta == open){                                //Si la compuerta está abierta
-    if(!enRango(&inclinometro,anguloLimite,500)){     // y está inclinada
+    if(!enRango(&inclinometro,anguloINF, anguloSUP,500)){     // y está inclinada
       compuerta.attach(PINS);                         
-      compuerta.write(90);  
+      compuerta.write(0+bonito);  
       puerta = !open;
       Serial.println("cerrando");                     //CIERRA LA COMPUERTA
       digitalWrite(OUT, HIGH);  //puerta cerrada
@@ -65,7 +71,7 @@ void loop() {
   }else{                                              //Si la compuerta está cerrada
     if(!digitalRead(IN)){                              //Y piden abrirla
       compuerta.attach(PINS); 
-      compuerta.write(0);
+      compuerta.write(90 + bonito);
       puerta = open;
       Serial.println("abriendo");                     //Abrir la puerta
       digitalWrite(OUT, LOW);     
@@ -88,37 +94,61 @@ void loop() {
 }
 
 void calibrarReferencia(MPU6050* inclinometro){
-  inclinometro->CalibrateAccel();
-  Serial.println("Nueva referencia");
+  gZ = inclinometro->getAccelerationZ();
+  gX = inclinometro->getAccelerationX();
+  gY = inclinometro->getAccelerationY();
+  gZ /= float(factorSensibilidad);
+  gX /= float(factorSensibilidad);
+  gY /= float(factorSensibilidad);
+  if (gZ < 0) gZ = -gZ;
+  // calculamos la componente que nos falta
+  float coplanar = pow(pow(gX,2) + pow(gY,2),1/2);
+  // calculamos el ángulo respecto a Z en el que estamos
+  float angulo = atan2(gZ,coplanar) > 0? (PI/2) - atan2(gZ,coplanar) : (PI/2) + atan2(gZ,coplanar); 
+  //guardamos el offset en memoria EEPROM
+  anguloINF = angulo*360/(2*PI) + anguloLimite;
+  anguloSUP = angulo*360/(2*PI) - anguloLimite;
+  
+  // inclinometro->CalibrateAccel();
+  // Serial.println("Nueva referencia");
 }
 
-// bool enRango(MPU6050 *inclinometro , uint8_t limite) {
-//   gX = inclinometro->getAccelerationX();
-//   gY = inclinometro->getAccelerationY();
-//   gZ = inclinometro->getAccelerationZ();
-
-//   gX /= float(factorSensibilidad);
-//   gY /= float(factorSensibilidad);
-//   gZ /= float(factorSensibilidad);
-  
-//   return 
-// }
-
-bool enRango(MPU6050 *inclinometro , uint8_t limite, uint8_t t_tolerancia) {
+bool enRango(MPU6050 *inclinometro , uint8_t limiteMIN, uint8_t limiteMAX, uint16_t t_tolerancia) {
   gZ = inclinometro->getAccelerationZ();
   gZ /= float(factorSensibilidad);
   if (gZ < 0) gZ = -gZ;
-  //Serial.println(gZ);
 
-  if(gZ < sin(float(90-limite)*2*PI/360)){
-    delay(t_tolerancia);
-    gZ = inclinometro->getAccelerationZ();
-    gZ /= float(factorSensibilidad);
-    if (gZ < 0) gZ = -gZ;
-    if(gZ < sin(float(90-limite)*2*PI/360)){
-      return false;
+  if (limiteMIN <= 0)
+  {
+    if(gZ < sin(float(90-limiteMAX)*2*PI/360))
+    {
+      delay(t_tolerancia);
+      gZ = inclinometro->getAccelerationZ();
+      gZ /= float(factorSensibilidad);
+      if (gZ < 0) gZ = -gZ;
+      if(gZ < sin(float(90-limiteMAX)*2*PI/360))
+      {
+        return false;
+      }
+    }
+  }else{
+    if(gZ < sin(float(90-limiteMAX)*2*PI/360) || gZ > sin(float(90-limiteMIN)*2*PI/360))
+    {
+      delay(t_tolerancia);
+      gZ = inclinometro->getAccelerationZ();
+      gZ /= float(factorSensibilidad);
+      if (gZ < 0) gZ = -gZ;
+      if(gZ < sin(float(90-limiteMAX)*2*PI/360) || gZ > sin(float(90-limiteMIN)*2*PI/360))
+      {
+        return false;
+      }
     }
   }
+  
+
+
+
+  
   
   return true;
 }
