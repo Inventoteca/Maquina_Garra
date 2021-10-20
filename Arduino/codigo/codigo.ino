@@ -2,10 +2,9 @@
 #include "Arduino_LSM9DS1.h"
 #include <Servo.h>
 #include <math.h>
-//#include "LSM9DS1.h"
 #define CALIB 5
-#define OUT 7
-#define IN 8
+#define OUT 8
+#define IN 7
 #define PINS 9
 #define open true
 
@@ -18,16 +17,14 @@ bool conectado = false,
      calib_stat = false,
      puerta = open;
 //Angulo permisible respecto a la vertical
-uint8_t anguloLimite = 40;
+uint8_t anguloLimite = 30;
 uint8_t anguloINF = 0;
-uint8_t anguloSUP = 40;
+uint8_t anguloSUP = anguloLimite;
 uint8_t bonito = 2;
-const int factorSensibilidad = 2048; //factor para una sensibilidad +-16g
+const int factorSensibilidad = 2150; //factor para una sensibilidad +-16g
 float gX, gY, gZ;
 
 //Ángulos para las rotaciones
-float _alpha = 0,   //respecto al eje Z
-      _beta = 0;    //respecto al eje Y
 
 
 void setup() {
@@ -36,7 +33,7 @@ void setup() {
   pinMode(IN, INPUT_PULLUP);
   compuerta.attach(PINS);
   compuerta.write(90+bonito);
-  // // inicializa y conecta con el inclinómetro
+  // inicializa y conecta con el inclinómetro
    Serial.begin(38400);
    conectado = inclinometro.testConnection();
    inclinometro.initialize();
@@ -47,10 +44,9 @@ void setup() {
 }
 
 void loop() {
-  if (!conectado) return;   //si no está conectado no hace nada (mandar error?)
+  //si no está conectado no hace nada (mandar error?)
   //Debouncing simple para el botón de calibración
   if (!digitalRead(CALIB) && !calib_stat){
-    //Calibra la nueva referencia 
     calibrarReferencia(&inclinometro);
     calib_stat = true;
   }
@@ -59,27 +55,30 @@ void loop() {
   }
 
   if (puerta == open){                                //Si la compuerta está abierta
-    if(!enRango(&inclinometro,anguloINF, anguloSUP,500)){     // y está inclinada
+    if(!enRango(&inclinometro,anguloINF, anguloSUP,500) && digitalRead(IN)){     // y está inclinada
       compuerta.attach(PINS);                         
-      compuerta.write(0+bonito);  
+      compuerta.write(90+bonito);  
       puerta = !open;
       Serial.println("cerrando");                     //CIERRA LA COMPUERTA
       digitalWrite(OUT, HIGH);  //puerta cerrada
-      delay(2000);
+      delay(2500);
       compuerta.detach();
     }
-  }else{                                              //Si la compuerta está cerrada
-    if(!digitalRead(IN)){                              //Y piden abrirla
-      compuerta.attach(PINS); 
-      compuerta.write(90 + bonito);
-      puerta = open;
-      Serial.println("abriendo");                     //Abrir la puerta
-      digitalWrite(OUT, LOW);     
-      delay(2000);        
-      compuerta.detach();   
-    }
   }
-  
+  if (puerta != open){
+    compuerta.attach(PINS);
+    delay(5000);
+    compuerta.write(90+bonito);
+  }
+  if(!digitalRead(IN)){                              //Y piden abrirla
+    compuerta.attach(PINS); 
+    compuerta.write(0 + bonito);
+    puerta = open;
+    Serial.println("abriendo");                     //Abrir la puerta
+    digitalWrite(OUT, LOW);     
+    delay(2500);        
+    compuerta.detach();   
+  }
 
   // if(gZ < sin(float(90-anguloLimite)*2*PI/360)){
   //   compuerta.attach(PINS);
@@ -90,10 +89,10 @@ void loop() {
   //EL VALOR DE Y DEL ACELEROMETRO DEBE VALER 
   
   // put your main code here, to run repeatedly:
-  
 }
 
 void calibrarReferencia(MPU6050* inclinometro){
+  Serial.println("nueva referencia");
   gZ = inclinometro->getAccelerationZ();
   gX = inclinometro->getAccelerationX();
   gY = inclinometro->getAccelerationY();
@@ -102,25 +101,47 @@ void calibrarReferencia(MPU6050* inclinometro){
   gY /= float(factorSensibilidad);
   if (gZ < 0) gZ = -gZ;
   // calculamos la componente que nos falta
-  float coplanar = pow(pow(gX,2) + pow(gY,2),1/2);
+   Serial.print("Magnitud coplanar: \t");
+  Serial.println(gX);
+   Serial.print("Magnitud coplanar: \t");
+  Serial.println(gY);
+   Serial.print("Magnitud coplanar: \t");
+  Serial.println(gZ);
+  gX = pow(gX,2);
+  gY = pow(gY,2);
+  Serial.print("gX^2: ");
+  Serial.println(gX);
+  Serial.print("gY^2: ");
+  Serial.println(gY);
+  float coplanar = sqrt(gX + gY);
+  Serial.print("Magnitud coplanar: \t");
+  Serial.println(coplanar);
+  Serial.print("TAN: \t");
+  float tan = atan2(gZ,coplanar);
+  Serial.println(tan);
   // calculamos el ángulo respecto a Z en el que estamos
-  float angulo = atan2(gZ,coplanar) > 0? (PI/2) - atan2(gZ,coplanar) : (PI/2) + atan2(gZ,coplanar); 
+  float angulo = tan > 0? (PI/2) - tan : (PI/2) + tan;
+  Serial.print("Angulo: \t");
+  Serial.println(angulo);
   //guardamos el offset en memoria EEPROM
-  anguloINF = angulo*360/(2*PI) + anguloLimite;
-  anguloSUP = angulo*360/(2*PI) - anguloLimite;
-  
-  // inclinometro->CalibrateAccel();
-  // Serial.println("Nueva referencia");
+  anguloSUP = (angulo*360/(2*PI) + anguloLimite);
+  anguloINF = (angulo*360/(2*PI) - anguloLimite) < 0 ? 0: (angulo*360/(2*PI) - anguloLimite);
+  Serial.print("Angulo INF: \t");
+  Serial.println(anguloINF);
+  Serial.print("Angulo SUP: \t");
+  Serial.println(anguloSUP);
 }
 
 bool enRango(MPU6050 *inclinometro , uint8_t limiteMIN, uint8_t limiteMAX, uint16_t t_tolerancia) {
   gZ = inclinometro->getAccelerationZ();
   gZ /= float(factorSensibilidad);
   if (gZ < 0) gZ = -gZ;
-
+  float anguloMin = sin(float(90-limiteMAX)*2*PI/360);
+  float anguloMax = sin(float(90-limiteMIN)*2*PI/360);
+  //Serial.println(gZ);
   if (limiteMIN <= 0)
   {
-    if(gZ < sin(float(90-limiteMAX)*2*PI/360))
+    if(gZ < anguloMin)
     {
       delay(t_tolerancia);
       gZ = inclinometro->getAccelerationZ();
@@ -132,23 +153,23 @@ bool enRango(MPU6050 *inclinometro , uint8_t limiteMIN, uint8_t limiteMAX, uint1
       }
     }
   }else{
-    if(gZ < sin(float(90-limiteMAX)*2*PI/360) || gZ > sin(float(90-limiteMIN)*2*PI/360))
+    if(gZ < anguloMin || gZ > anguloMax)
     {
       delay(t_tolerancia);
       gZ = inclinometro->getAccelerationZ();
       gZ /= float(factorSensibilidad);
       if (gZ < 0) gZ = -gZ;
-      if(gZ < sin(float(90-limiteMAX)*2*PI/360) || gZ > sin(float(90-limiteMIN)*2*PI/360))
+      // Serial.print("gZ:");
+      // Serial.println(gZ);
+      // Serial.print("SinMax: ");
+      // Serial.println(anguloMax);
+      // Serial.print("SinMin: ");
+      // Serial.println(anguloMin);
+      if(gZ < anguloMin || gZ > anguloMax)
       {
         return false;
       }
     }
   }
-  
-
-
-
-  
-  
   return true;
 }
