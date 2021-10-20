@@ -2,11 +2,14 @@
 #include "Arduino_LSM9DS1.h"
 #include <Servo.h>
 #include <math.h>
+#define T_CIERRE 5000
+#define T_DETACH 2500
+#define T_COMP   500
 #define CALIB 5
 #define OUT 8
 #define IN 7
 #define PINS 9
-#define open true
+#define Open true
 
 // genera un objeto de la case MPU6050 
 // con la dirección I2C predeterminada
@@ -15,18 +18,24 @@ Servo compuerta;
 MPU6050 inclinometro;
 bool conectado = false,
      calib_stat = false,
-     puerta = open;
+     puerta = Open;
 //Angulo permisible respecto a la vertical
 uint8_t anguloLimite = 30;
 uint8_t anguloINF = 0;
 uint8_t anguloSUP = anguloLimite;
 uint8_t bonito = 2;
 const int factorSensibilidad = 2150; //factor para una sensibilidad +-16g
-float gX, gY, gZ;
-
-//Ángulos para las rotaciones
-
-
+float gX, 
+      gY, 
+      gZ;
+      
+unsigned long t_cierre = 0,
+              t_detachO = 0,
+              t_detachC = 0,
+              t_detachCC = 0,
+              t_comparacion = 0,
+              t_act = 0;
+      
 void setup() {
   pinMode(CALIB, INPUT_PULLUP);
   pinMode(OUT, OUTPUT);
@@ -40,11 +49,33 @@ void setup() {
    inclinometro.setFullScaleAccelRange(MPU6050_ACCEL_FS_16);
    compuerta.detach();
    //leemos los valores de los ángulos límite guardados en la EEPROM
-
 }
 
 void loop() {
-  //si no está conectado no hace nada (mandar error?)
+Serial.print("t: ");
+Serial.print(t_act);
+Serial.print("\t");
+Serial.print("t_dO: ");
+Serial.print(t_detachO);
+Serial.print("\t");
+Serial.print("t_dC: ");
+Serial.print(t_detachC);
+Serial.print("\t");
+Serial.print("t_comp: ");
+Serial.print(t_comparacion);
+Serial.print("\t");
+Serial.print("t_c: ");
+Serial.println(t_cierre);
+Serial.println(" ");
+  
+  t_act = millis();
+  //Manejamos el inevitable overflow de la variable de tiempo
+  if(t_act < t_cierre || t_act < t_detachO || t_act < t_detachC ||t_act < t_comparacion){
+    t_cierre = t_act;
+    t_detachO = t_act;
+    t_detachC = t_act;
+    t_comparacion = t_act;
+  }
   //Debouncing simple para el botón de calibración
   if (!digitalRead(CALIB) && !calib_stat){
     calibrarReferencia(&inclinometro);
@@ -54,32 +85,71 @@ void loop() {
     calib_stat = false;
   }
 
-  if (puerta == open){                                //Si la compuerta está abierta
+  if (puerta == Open){                                //Si la compuerta está abierta
     if(!enRango(&inclinometro,anguloINF, anguloSUP,500) && digitalRead(IN)){     // y está inclinada
       compuerta.attach(PINS);                         
       compuerta.write(90+bonito);  
-      puerta = !open;
+      puerta = !Open;
       Serial.println("cerrando");                     //CIERRA LA COMPUERTA
+      if (t_detachC == 0){
+        t_detachC = t_act;
+      }
       digitalWrite(OUT, HIGH);  //puerta cerrada
-      delay(2500);
-      compuerta.detach();
+//      if(t_act - t_detachO >= T_DETACH){
+//        t_detachO = 0;
+//        compuerta.detach();
+//        Serial.println("detach");
+//      }
     }
   }
-  if (puerta != open){
-    compuerta.attach(PINS);
-    delay(5000);
-    compuerta.write(90+bonito);
+  
+  if (puerta != Open){
+      if (t_cierre == 0){
+        t_cierre = t_act;
+      }
+    if ((t_act - t_cierre) >= T_CIERRE){
+      if (t_detachCC == 0){
+        t_detachCC = t_act;
+      }
+      Serial.println("refuerzo de cierre");
+      compuerta.attach(PINS);
+      compuerta.write(90+bonito);
+      t_cierre = 0;
+    }
   }
+  
   if(!digitalRead(IN)){                              //Y piden abrirla
     compuerta.attach(PINS); 
     compuerta.write(0 + bonito);
-    puerta = open;
+    puerta = Open;
     Serial.println("abriendo");                     //Abrir la puerta
+    if (t_detachO == 0){
+      t_detachO = t_act;
+    }
     digitalWrite(OUT, LOW);     
-    delay(2500);        
-    compuerta.detach();   
+//    if(t_act - t_detachC >= T_DETACH){
+//      t_detachC = 0;
+//      Serial.println("detach");
+//      compuerta.detach();
+//    }  
   }
 
+
+      if(t_detachO != 0 && t_act - t_detachO >= T_DETACH ){
+        t_detachO = 0;
+        compuerta.detach();
+        Serial.println("detach");
+      }
+      if(t_detachC != 0 && t_act - t_detachC >= T_DETACH ){
+        t_detachC = 0;
+        compuerta.detach();
+        Serial.println("detach");
+      }
+      if(t_detachCC != 0 && t_act - t_detachCC >= T_DETACH ){
+        t_detachCC = 0;
+        compuerta.detach();
+        Serial.println("detach");
+      }
   // if(gZ < sin(float(90-anguloLimite)*2*PI/360)){
   //   compuerta.attach(PINS);
   //   compuerta.write(90);
@@ -143,33 +213,29 @@ bool enRango(MPU6050 *inclinometro , uint8_t limiteMIN, uint8_t limiteMAX, uint1
   {
     if(gZ < anguloMin)
     {
-      delay(t_tolerancia);
-      gZ = inclinometro->getAccelerationZ();
-      gZ /= float(factorSensibilidad);
-      if (gZ < 0) gZ = -gZ;
-      if(gZ < sin(float(90-limiteMAX)*2*PI/360))
-      {
-        return false;
+      if(t_comparacion == 0){
+        t_comparacion = t_act;
       }
     }
   }else{
     if(gZ < anguloMin || gZ > anguloMax)
     {
-      delay(t_tolerancia);
-      gZ = inclinometro->getAccelerationZ();
-      gZ /= float(factorSensibilidad);
-      if (gZ < 0) gZ = -gZ;
-      // Serial.print("gZ:");
-      // Serial.println(gZ);
-      // Serial.print("SinMax: ");
-      // Serial.println(anguloMax);
-      // Serial.print("SinMin: ");
-      // Serial.println(anguloMin);
-      if(gZ < anguloMin || gZ > anguloMax)
-      {
-        return false;
-      }
+     if(t_comparacion == 0){
+       t_comparacion = t_act;
+     }
     }
+   }
+
+  if(t_comparacion != 0 && (t_act - t_comparacion >= t_tolerancia)){
+   t_comparacion = 0;
+   Serial.println("verificando");
+   gZ = inclinometro->getAccelerationZ();
+   gZ /= float(factorSensibilidad);
+   if (gZ < 0) gZ = -gZ;
+   if(gZ < sin(float(90-limiteMAX)*2*PI/360))
+   {
+     return false;
+   }  
   }
   return true;
 }
