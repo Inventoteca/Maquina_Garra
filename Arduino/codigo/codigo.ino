@@ -1,5 +1,4 @@
 #include "MPU6050.h"
-#include "Arduino_LSM9DS1.h"
 #include <Servo.h>
 #include <math.h>
 #define T_CIERRE 5000
@@ -47,7 +46,7 @@ void setup() {
    conectado = inclinometro.testConnection();
    inclinometro.initialize();
    inclinometro.setFullScaleAccelRange(MPU6050_ACCEL_FS_16);
-   compuerta.detach();
+//   compuerta.detach();
    //leemos los valores de los ángulos límite guardados en la EEPROM
 }
 
@@ -137,17 +136,17 @@ Serial.println(" ");
 
       if(t_detachO != 0 && t_act - t_detachO >= T_DETACH ){
         t_detachO = 0;
-        compuerta.detach();
+//        compuerta.detach();
         Serial.println("detach");
       }
       if(t_detachC != 0 && t_act - t_detachC >= T_DETACH ){
         t_detachC = 0;
-        compuerta.detach();
+//        compuerta.detach();
         Serial.println("detach");
       }
       if(t_detachCC != 0 && t_act - t_detachCC >= T_DETACH ){
         t_detachCC = 0;
-        compuerta.detach();
+//        compuerta.detach();
         Serial.println("detach");
       }
   // if(gZ < sin(float(90-anguloLimite)*2*PI/360)){
