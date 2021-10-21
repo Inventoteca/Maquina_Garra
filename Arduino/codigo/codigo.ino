@@ -22,12 +22,12 @@ bool conectado = false,                   // representa la conexión del MPU con
      calib_stat = false,                  // variable que ayuda al debouncing del botón de calibración
      puerta = Open;                       // estado inicial de la puerta
 uint8_t anguloLimite = 30;                // Angulo permisible respecto a la vertical
-uint8_t anguloINF = 0;                    // Angulo límite mínimo respecto a la vertical
-uint8_t anguloSUP = anguloLimite;         // Angulo límite máximo respecto a la vertical
+uint8_t desplazamientoMIN = 0;                    // Angulo límite mínimo respecto a la vertical
+uint8_t desplazamientoMAX = anguloLimite;         // Angulo límite máximo respecto a la vertical
 uint8_t compens = 0;                       //Angulo ajustable para que el servo coloque la puerta en una posición exacta
 const int factorSensibilidad = 2150;      //factor de escalamiento para una sensibilidad +-16g del MPU
-int anguloCerrado = 90; //Calibrar la posición de cierre del servo
-int anguloAbierto = 0;  //Calibrar la posición de apertura del servo
+int anguloCerrado = 85; //Calibrar la posición de cierre del servo
+int anguloAbierto = 5;  //Calibrar la posición de apertura del servo
 float gX, gY, gZ;                                    //Variables de aceleración                              
       
 unsigned long t_cierre = 0,               //Variables para el control de tiempos
@@ -36,8 +36,7 @@ unsigned long t_cierre = 0,               //Variables para el control de tiempos
               t_detachCC = 0,
               t_verificacion = 0,
               t_act = 0;                  //Tiempo activo
-
-
+              
 
 void setup() { //------------------------------------------------------SETUP----------------------------------//
   pinMode(CALIB, INPUT_PULLUP);
@@ -69,7 +68,6 @@ void loop() {//------------------------------------------------------LOOP-------
     t_detachC = t_act;
     t_verificacion = t_act;
   }
-
   
   //Debouncing simple para el botón de calibración
   if (!digitalRead(CALIB) && !calib_stat){
@@ -84,7 +82,7 @@ void loop() {//------------------------------------------------------LOOP-------
   
 
   if (puerta == Open){                                                            //Si la compuerta está abierta
-    if(!enRango(&inclinometro,anguloINF, anguloSUP,500) && digitalRead(IN)){      // y está inclinada y sin el pulso de abrir conectado 
+    if(!enRango(&inclinometro,desplazamientoMIN, desplazamientoMAX,500) && digitalRead(IN)){      // y está inclinada y sin el pulso de abrir conectado 
       compuerta.attach(SERVO);                                                    //Da corriente al servo   
       compuerta.write(anguloCerrado); puerta = !Open; Serial.println("cerrando");    //CIERRA LA COMPUERTA                 
       if (t_detachC == 0){
@@ -120,21 +118,19 @@ void loop() {//------------------------------------------------------LOOP-------
     digitalWrite(OUT, LOW);                     //Notifica que la puerta está abierta
   }
 
-
-      if(t_detachO != 0 && t_act - t_detachO >= T_DETACH ){
-        t_detachO = 0;                          //Resetea la bandera para hacer detach la próxima vuelta
-        Serial.println("detach");
-      }
-
-      
-      if(t_detachC != 0 && t_act - t_detachC >= T_DETACH ){
-        t_detachC = 0;
-        Serial.println("detach");
-      }
-      if(t_detachCC != 0 && t_act - t_detachCC >= T_DETACH ){
-        t_detachCC = 0;
-        Serial.println("detach");
-      }
+    if(t_detachO != 0 && t_act - t_detachO >= T_DETACH ){
+      t_detachO = 0;                          //Resetea la bandera para hacer detach la próxima vuelta
+      Serial.println("detach");
+    }
+    if(t_detachC != 0 && t_act - t_detachC >= T_DETACH ){
+      t_detachC = 0;
+      Serial.println("detach");
+    }
+    if(t_detachCC != 0 && t_act - t_detachCC >= T_DETACH ){
+      t_detachCC = 0;
+      Serial.println("detach");
+    }
+    
 }//---------------------------------------------------------------FIN LOOP----------------------------------//
 
 void calibrarReferencia(MPU6050* inclinometro){
@@ -153,17 +149,19 @@ void calibrarReferencia(MPU6050* inclinometro){
   gY = pow(gY,2);
   float coplanar = sqrt(gX + gY);
   float _tan = atan2(gZ,coplanar);
-  float angulo = _tan > 0? (PI/2) - _tan : (PI/2) + _tan;
-  anguloSUP = (angulo*360/(2*PI) + anguloLimite);
-  anguloINF = (angulo*360/(2*PI) - anguloLimite) < 0 ? 0: (angulo*360/(2*PI) - anguloLimite);
-}
+  float angulo = _tan > 0? (PI/2) - _tan : (PI/2) + _tan;     //ángulo respecto a la vertical
+  desplazamientoMAX = (angulo*360/(2*PI) + anguloLimite);
+  desplazamientoMIN = (angulo*360/(2*PI) - anguloLimite) < 0 ? 0: (angulo*360/(2*PI) - anguloLimite);
+} //Fin calibrarReferencia()
 
 bool enRango(MPU6050 *inclinometro , uint8_t limiteMIN, uint8_t limiteMAX, uint16_t t_tolerancia) {
-  gZ = inclinometro->getAccelerationZ();
+  gZ = inclinometro->getAccelerationZ(); 
   gZ /= float(factorSensibilidad);
-  if (gZ < 0) gZ = -gZ;
-  float anguloMin = sin(float(90-limiteMAX)*2*PI/360);
+  if (gZ < 0) gZ = -gZ; //Para que no haya números negativos
+  
+  float anguloMin = sin(float(90-limiteMAX)*2*PI/360); // 
   float anguloMax = sin(float(90-limiteMIN)*2*PI/360);
+  
   if (limiteMIN <= 0)
   {
     if(gZ < anguloMin)
@@ -193,4 +191,4 @@ bool enRango(MPU6050 *inclinometro , uint8_t limiteMIN, uint8_t limiteMAX, uint1
    }  
   }
   return true;
-}
+}//Fin enRango()
