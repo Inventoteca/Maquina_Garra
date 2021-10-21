@@ -1,12 +1,13 @@
 #include "MPU6050.h"
 #include <Servo.h>
 #include <math.h>
+#include <EEPROM.h>
 
 //Cambiar aquí para cambiar en todo el código
 //Definiciones de tiempo T
 #define T_CIERRE 10000     //Cuando la puerta esté cerrada, recolocará el servo en su posición cada T_CIERRE ms
 #define T_DETACH 5000     //Hace detach del servo para que no ande consumiendo corriente al haber pasado T_DETACH ms de iniciar su movimiento
-#define T_VERIF  800      //Cuando se detecte movimiento verifica si dura más de T_VERIF ms para decidir si cerrar o no la compuerta
+#define T_VERIF  900      //Cuando se detecte movimiento verifica si dura más de T_VERIF ms para decidir si cerrar o no la compuerta
 //Definiciones de pines
 #define CALIB 5           // Pin para el botón de calibración |activo en bajo|
 #define OUT 8             // Pin de salida para notificar del cierre de la puerta |activo en alto|
@@ -18,17 +19,17 @@
 Servo compuerta;                          // objeto de tipo Servo
 MPU6050 inclinometro;                     // objeto de tipo inclinometro (dirección I2C predeterminada)
 
-bool conectado = false,                   // representa la conexión del MPU con el arduino (checada al iniciar el Arduino)
-     calib_stat = false,                  // variable que ayuda al debouncing del botón de calibración
-     puerta = Open;                       // estado inicial de la puerta
-uint8_t anguloLimite = 30;                // Angulo permisible respecto a la vertical
+bool conectado = false,                           // representa la conexión del MPU con el arduino (checada al iniciar el Arduino)
+     calib_stat = false,                          // variable que ayuda al debouncing del botón de calibración
+     puerta = Open;                               // estado inicial de la puerta
+uint8_t anguloLimite = 30;                        // Angulo permisible respecto a la vertical
 uint8_t desplazamientoMIN = 0;                    // Angulo límite mínimo respecto a la vertical
 uint8_t desplazamientoMAX = anguloLimite;         // Angulo límite máximo respecto a la vertical
-uint8_t compens = 0;                       //Angulo ajustable para que el servo coloque la puerta en una posición exacta
-const int factorSensibilidad = 2150;      //factor de escalamiento para una sensibilidad +-16g del MPU
-int anguloCerrado = 85; //Calibrar la posición de cierre del servo
-int anguloAbierto = 5;  //Calibrar la posición de apertura del servo
-float gX, gY, gZ;                                    //Variables de aceleración                              
+uint8_t compens = 0;                              //Angulo ajustable para que el servo coloque la puerta en una posición exacta
+const int factorSensibilidad = 2100;              //factor de escalamiento para una sensibilidad +-16g del MPU
+int anguloCerrado = 85;                           //Calibrar la posición de cierre del servo
+int anguloAbierto = 5;                            //Calibrar la posición de apertura del servo
+float gX, gY, gZ;                                 //Variables de aceleración                              
       
 unsigned long t_cierre = 0,               //Variables para el control de tiempos
               t_detachO = 0,
@@ -39,6 +40,15 @@ unsigned long t_cierre = 0,               //Variables para el control de tiempos
               
 
 void setup() { //------------------------------------------------------SETUP----------------------------------//
+  //Leemos los valores de desplazamiento mínimo y máximo de la EEPROM
+  EEPROM.get(0,desplazamientoMIN);
+  EEPROM.get(8, desplazamientoMAX);
+  if(desplazamientoMAX == 255 || desplazamientoMIN == 255){   //Si no hay nada escrito en EEPROM usa valores default
+    desplazamientoMAX = anguloLimite;
+    desplazamientoMIN = 0;
+    EEPROM.put(0,desplazamientoMIN);
+    EEPROM.put(8,desplazamientoMAX);
+  }
   pinMode(CALIB, INPUT_PULLUP);
   pinMode(IN, INPUT_PULLUP);
   pinMode(OUT, OUTPUT);
@@ -55,6 +65,10 @@ void setup() { //------------------------------------------------------SETUP----
    //leemos los valores de los ángulos límite guardados en la EEPROM
 
   Serial.println("Programa inicializado.");
+  Serial.print("calibración actual: ");
+  Serial.print(desplazamientoMIN);
+  Serial.print("\t");
+  Serial.print(desplazamientoMAX);
    
 } //---------------------------------------------------------------FIN SETUP----------------------------------//
 
@@ -82,7 +96,7 @@ void loop() {//------------------------------------------------------LOOP-------
   
 
   if (puerta == Open){                                                            //Si la compuerta está abierta
-    if(!enRango(&inclinometro,desplazamientoMIN, desplazamientoMAX,500) && digitalRead(IN)){      // y está inclinada y sin el pulso de abrir conectado 
+    if(!enRango(&inclinometro,desplazamientoMIN, desplazamientoMAX,500) && digitalRead(IN)){      // y está inclinada y sin el pulso de abrir conectado
       compuerta.attach(SERVO);                                                    //Da corriente al servo   
       compuerta.write(anguloCerrado); puerta = !Open; Serial.println("cerrando");    //CIERRA LA COMPUERTA                 
       if (t_detachC == 0){
@@ -152,6 +166,9 @@ void calibrarReferencia(MPU6050* inclinometro){
   float angulo = _tan > 0? (PI/2) - _tan : (PI/2) + _tan;     //ángulo respecto a la vertical
   desplazamientoMAX = (angulo*360/(2*PI) + anguloLimite);
   desplazamientoMIN = (angulo*360/(2*PI) - anguloLimite) < 0 ? 0: (angulo*360/(2*PI) - anguloLimite);
+  EEPROM.put(0,desplazamientoMIN);
+  EEPROM.put(8,desplazamientoMAX);
+
 } //Fin calibrarReferencia()
 
 bool enRango(MPU6050 *inclinometro , uint8_t limiteMIN, uint8_t limiteMAX, uint16_t t_tolerancia) {
