@@ -59,14 +59,13 @@
 </layers>
 <board>
 <plain>
-<wire x1="0" y1="11.43" x2="44.12" y2="11.43" width="0" layer="20"/>
-<wire x1="44.12" y1="11.43" x2="44.12" y2="74.92" width="0" layer="20"/>
-<wire x1="44.12" y1="74.92" x2="0" y2="74.92" width="0" layer="20"/>
-<wire x1="0" y1="74.92" x2="0" y2="11.43" width="0" layer="20"/>
-<hole x="19.685" y="65.024" drill="0.9"/>
-<hole x="8.382" y="17.145" drill="0.9"/>
-<hole x="27.305" y="45.847" drill="0.9"/>
-<hole x="37.592" y="23.495" drill="0.9"/>
+<wire x1="2.54" y1="12.7" x2="37.77" y2="12.7" width="0" layer="20"/>
+<wire x1="37.77" y1="12.7" x2="37.77" y2="76.19" width="0" layer="20"/>
+<wire x1="37.77" y1="76.19" x2="2.54" y2="76.19" width="0" layer="20"/>
+<wire x1="2.54" y1="76.19" x2="2.54" y2="12.7" width="0" layer="20"/>
+<hole x="20.32" y="71.12" drill="0.9"/>
+<hole x="6.35" y="16.51" drill="0.9"/>
+<hole x="34.29" y="36.83" drill="0.9"/>
 </plain>
 <libraries>
 <library name="terminal-block-clema-3.81-1776113-2">
@@ -579,135 +578,148 @@ design rules under a new name.</description>
 </pass>
 </autorouter>
 <elements>
-<element name="ALIMENTACION" library="terminal-block-clema-3.81-1776113-2" package="TE_1776113-2" value="CLEMA 3.81mm" x="36.83" y="57.15" smashed="yes" rot="R270">
-<attribute name="AVAILABILITY" value="In Stock" x="-7.62" y="22.86" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="CENTERLINE_PITCH" value="3.81 mm[.1499 in]" x="-7.62" y="22.86" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="COMMENT" value="1776113-2" x="-7.62" y="22.86" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="DESCRIPTION" value=" 2P,3.81MM,SIDE ENTRY,HIGH TMP " x="-7.62" y="22.86" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="EU_ROHS_COMPLIANCE" value="Compliant" x="-7.62" y="22.86" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="MF" value="TE Connectivity" x="-7.62" y="22.86" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="MP" value="1776113-2" x="-7.62" y="22.86" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="NAME" x="41.086190625" y="63.69581875" size="1.27185" layer="25" rot="R270"/>
-<attribute name="NUMBER_OF_POSITIONS" value="2" x="-7.62" y="22.86" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="PACKAGE" value="None" x="-7.62" y="22.86" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="PRICE" value="None" x="-7.62" y="22.86" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="PURCHASE-URL" value="https://pricing.snapeda.com/search/part/1776113-2/?ref=eda" x="-7.62" y="22.86" size="1.778" layer="27" rot="R270" display="off"/>
+<element name="ALIMENTACION" library="terminal-block-clema-3.81-1776113-2" package="TE_1776113-2" value="CLEMA 3.81mm" x="30.48" y="57.15" smashed="yes" rot="R270">
+<attribute name="AVAILABILITY" value="In Stock" x="-13.97" y="22.86" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="CENTERLINE_PITCH" value="3.81 mm[.1499 in]" x="-13.97" y="22.86" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="COMMENT" value="1776113-2" x="-13.97" y="22.86" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="DESCRIPTION" value=" 2P,3.81MM,SIDE ENTRY,HIGH TMP " x="-13.97" y="22.86" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="EU_ROHS_COMPLIANCE" value="Compliant" x="-13.97" y="22.86" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="MF" value="TE Connectivity" x="-13.97" y="22.86" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="MP" value="1776113-2" x="-13.97" y="22.86" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="NAME" x="34.736190625" y="63.69581875" size="1.27185" layer="25" rot="R270"/>
+<attribute name="NUMBER_OF_POSITIONS" value="2" x="-13.97" y="22.86" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="PACKAGE" value="None" x="-13.97" y="22.86" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="PRICE" value="None" x="-13.97" y="22.86" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="PURCHASE-URL" value="https://pricing.snapeda.com/search/part/1776113-2/?ref=eda" x="-13.97" y="22.86" size="1.778" layer="27" rot="R270" display="off"/>
 </element>
-<element name="MPU6050" library="con-lstb" library_urn="urn:adsk.eagle:library:162" package="MA08-1" package3d_urn="urn:adsk.eagle:package:8343/1" value="" x="27.94" y="25.4" smashed="yes" rot="R90">
-<attribute name="MF" value="" x="83.82" y="49.53" size="1.778" layer="27" rot="R90" display="off"/>
-<attribute name="MPN" value="" x="83.82" y="49.53" size="1.778" layer="27" rot="R90" display="off"/>
-<attribute name="NAME" x="26.289" y="15.24" size="1.27" layer="25" ratio="10" rot="R90"/>
-<attribute name="OC_FARNELL" value="unknown" x="83.82" y="49.53" size="1.778" layer="27" rot="R90" display="off"/>
-<attribute name="OC_NEWARK" value="unknown" x="83.82" y="49.53" size="1.778" layer="27" rot="R90" display="off"/>
-<attribute name="POPULARITY" value="10" x="83.82" y="49.53" size="1.778" layer="27" rot="R90" display="off"/>
-<attribute name="VALUE" x="30.861" y="24.13" size="1.27" layer="27" ratio="10" rot="R90"/>
+<element name="MPU6050" library="con-lstb" library_urn="urn:adsk.eagle:library:162" package="MA08-1" package3d_urn="urn:adsk.eagle:package:8343/1" value="" x="26.67" y="25.4" smashed="yes" rot="R90">
+<attribute name="MF" value="" x="82.55" y="49.53" size="1.778" layer="27" rot="R90" display="off"/>
+<attribute name="MPN" value="" x="82.55" y="49.53" size="1.778" layer="27" rot="R90" display="off"/>
+<attribute name="NAME" x="25.019" y="15.24" size="1.27" layer="25" ratio="10" rot="R90"/>
+<attribute name="OC_FARNELL" value="unknown" x="82.55" y="49.53" size="1.778" layer="27" rot="R90" display="off"/>
+<attribute name="OC_NEWARK" value="unknown" x="82.55" y="49.53" size="1.778" layer="27" rot="R90" display="off"/>
+<attribute name="POPULARITY" value="10" x="82.55" y="49.53" size="1.778" layer="27" rot="R90" display="off"/>
+<attribute name="VALUE" x="29.591" y="24.13" size="1.27" layer="27" ratio="10" rot="R90"/>
 </element>
-<element name="PROG" library="pinhead" library_urn="urn:adsk.eagle:library:325" package="1X05" package3d_urn="urn:adsk.eagle:package:22469/2" value="" x="11.43" y="21.59" smashed="yes">
-<attribute name="NAME" x="5.0038" y="23.4188" size="1.27" layer="25" ratio="10"/>
-<attribute name="POPULARITY" value="69" x="53.34" y="-33.02" size="1.778" layer="27" display="off"/>
-<attribute name="VALUE" x="5.08" y="18.415" size="1.27" layer="27"/>
+<element name="PROG" library="pinhead" library_urn="urn:adsk.eagle:library:325" package="1X05" package3d_urn="urn:adsk.eagle:package:22469/2" value="" x="13.97" y="21.59" smashed="yes">
+<attribute name="NAME" x="7.5438" y="23.4188" size="1.27" layer="25" ratio="10"/>
+<attribute name="POPULARITY" value="69" x="55.88" y="-33.02" size="1.778" layer="27" display="off"/>
+<attribute name="VALUE" x="7.62" y="18.415" size="1.27" layer="27"/>
 </element>
-<element name="PULSOS" library="terminal-block-clema-3.81-284392-3" package="TE_284392-3" value="CLEMA 3.81mm" x="36.83" y="43.18" smashed="yes" rot="R270">
-<attribute name="AVAILABILITY" value="In Stock" x="29.21" y="3.81" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="COMMENT" value="284392-3" x="29.21" y="3.81" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="DESCRIPTION" value=" Conn Terminal Block 3 POS 3.81mm Solder ST Thru-Hole 12A/Contact " x="29.21" y="3.81" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="EU_ROHS_COMPLIANCE" value="Compliant with Exemptions" x="29.21" y="3.81" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="MF" value="TE Connectivity" x="29.21" y="3.81" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="MP" value="284392-3" x="29.21" y="3.81" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="NAME" x="41.275" y="44.45" size="1.27" layer="25" rot="R270"/>
-<attribute name="PACKAGE" value="None" x="29.21" y="3.81" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="PRICE" value="None" x="29.21" y="3.81" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="PURCHASE-URL" value="https://pricing.snapeda.com/search/part/284392-3/?ref=eda" x="29.21" y="3.81" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="VALUE" x="30.48" y="57.51" size="1.27" layer="27" rot="R270"/>
+<element name="PULSOS" library="terminal-block-clema-3.81-284392-3" package="TE_284392-3" value="CLEMA 3.81mm" x="30.48" y="45.72" smashed="yes" rot="R270">
+<attribute name="AVAILABILITY" value="In Stock" x="22.86" y="6.35" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="COMMENT" value="284392-3" x="22.86" y="6.35" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="DESCRIPTION" value=" Conn Terminal Block 3 POS 3.81mm Solder ST Thru-Hole 12A/Contact " x="22.86" y="6.35" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="EU_ROHS_COMPLIANCE" value="Compliant with Exemptions" x="22.86" y="6.35" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="MF" value="TE Connectivity" x="22.86" y="6.35" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="MP" value="284392-3" x="22.86" y="6.35" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="NAME" x="34.925" y="46.99" size="1.27" layer="25" rot="R270"/>
+<attribute name="PACKAGE" value="None" x="22.86" y="6.35" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="PRICE" value="None" x="22.86" y="6.35" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="PURCHASE-URL" value="https://pricing.snapeda.com/search/part/284392-3/?ref=eda" x="22.86" y="6.35" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="VALUE" x="24.13" y="60.05" size="1.27" layer="27" rot="R270"/>
 </element>
-<element name="S1" library="pushbutton" package="SW_4-1437565-0" value="PUSHB" x="11.43" y="68.58" smashed="yes" rot="R270">
-<attribute name="AVAILABILITY" value="In Stock" x="-31.75" y="25.4" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="COMMENT" value="4-1437565-0" x="-31.75" y="25.4" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="DESCRIPTION" value=" features, series, Tactile / Jog, circuitry, voltage, illumination, operation, tactile, style, Pushbutton, Industrial ... " x="-31.75" y="25.4" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="MF" value="TE Connectivity" x="-31.75" y="25.4" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="MP" value="FSM4JRT" x="-31.75" y="25.4" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="NAME" x="14.935459375" y="72.085459375" size="0.61055" layer="25" rot="R270"/>
-<attribute name="PACKAGE" value="None" x="-31.75" y="25.4" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="PRICE" value="None" x="-31.75" y="25.4" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="PURCHASE-URL" value="https://pricing.snapeda.com/search/part/FSM4JRT/?ref=eda" x="-31.75" y="25.4" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="VALUE" x="7.322140625" y="72.086709375" size="0.61076875" layer="27" rot="R270"/>
+<element name="S1" library="pushbutton" package="SW_4-1437565-0" value="PUSHB" x="10.16" y="71.12" smashed="yes">
+<attribute name="AVAILABILITY" value="In Stock" x="53.34" y="27.94" size="1.778" layer="27" display="off"/>
+<attribute name="COMMENT" value="4-1437565-0" x="53.34" y="27.94" size="1.778" layer="27" display="off"/>
+<attribute name="DESCRIPTION" value=" features, series, Tactile / Jog, circuitry, voltage, illumination, operation, tactile, style, Pushbutton, Industrial ... " x="53.34" y="27.94" size="1.778" layer="27" display="off"/>
+<attribute name="MF" value="TE Connectivity" x="53.34" y="27.94" size="1.778" layer="27" display="off"/>
+<attribute name="MP" value="FSM4JRT" x="53.34" y="27.94" size="1.778" layer="27" display="off"/>
+<attribute name="NAME" x="6.654540625" y="74.625459375" size="0.61055" layer="25"/>
+<attribute name="PACKAGE" value="None" x="53.34" y="27.94" size="1.778" layer="27" display="off"/>
+<attribute name="PRICE" value="None" x="53.34" y="27.94" size="1.778" layer="27" display="off"/>
+<attribute name="PURCHASE-URL" value="https://pricing.snapeda.com/search/part/FSM4JRT/?ref=eda" x="53.34" y="27.94" size="1.778" layer="27" display="off"/>
+<attribute name="VALUE" x="6.653290625" y="67.012140625" size="0.61076875" layer="27"/>
 </element>
-<element name="SERVO" library="pinhead" library_urn="urn:adsk.eagle:library:325" package="1X03/90" package3d_urn="urn:adsk.eagle:package:22459/2" value="" x="36.83" y="67.31" smashed="yes">
-<attribute name="NAME" x="32.385" y="63.5" size="1.27" layer="25" ratio="10" rot="R90"/>
-<attribute name="POPULARITY" value="17" x="54.61" y="22.86" size="1.778" layer="27" display="off"/>
-<attribute name="VALUE" x="42.545" y="63.5" size="1.27" layer="27" rot="R90"/>
+<element name="SERVO" library="pinhead" library_urn="urn:adsk.eagle:library:325" package="1X03/90" package3d_urn="urn:adsk.eagle:package:22459/2" value="" x="30.48" y="68.58" smashed="yes">
+<attribute name="NAME" x="26.035" y="64.77" size="1.27" layer="25" ratio="10" rot="R90"/>
+<attribute name="POPULARITY" value="17" x="48.26" y="24.13" size="1.778" layer="27" display="off"/>
+<attribute name="VALUE" x="36.195" y="64.77" size="1.27" layer="27" rot="R90"/>
 </element>
-<element name="U1" library="ARDUINO_PRO_MINI" package="MODULE_ARDUINO_PRO_MINI" value="ARDUINO_PRO_MINI" x="12.7" y="43.18" smashed="yes" rot="R180">
-<attribute name="AVAILABILITY" value="Not in stock" x="-10.16" y="62.23" size="1.778" layer="27" rot="R180" display="off"/>
-<attribute name="DESCRIPTION" value=" This board was developed for applications and installations where space is premium and projects are made as permanent set ups. Small, available in 3.3 V and 5 V versions, powered by ATmega328P. " x="-10.16" y="62.23" size="1.778" layer="27" rot="R180" display="off"/>
-<attribute name="MF" value="Arduino" x="-10.16" y="62.23" size="1.778" layer="27" rot="R180" display="off"/>
-<attribute name="MP" value="Arduino Pro Mini" x="-10.16" y="62.23" size="1.778" layer="27" rot="R180" display="off"/>
-<attribute name="NAME" x="21.7" y="26.18" size="1.27" layer="25" rot="R180"/>
-<attribute name="PACKAGE" value="None" x="-10.16" y="62.23" size="1.778" layer="27" rot="R180" display="off"/>
-<attribute name="PRICE" value="None" x="-10.16" y="62.23" size="1.778" layer="27" rot="R180" display="off"/>
-<attribute name="VALUE" x="21.7" y="61.68" size="1.27" layer="27" rot="R180"/>
+<element name="U1" library="ARDUINO_PRO_MINI" package="MODULE_ARDUINO_PRO_MINI" value="ARDUINO_PRO_MINI" x="13.97" y="44.45" smashed="yes" rot="R180">
+<attribute name="AVAILABILITY" value="Not in stock" x="-8.89" y="63.5" size="1.778" layer="27" rot="R180" display="off"/>
+<attribute name="DESCRIPTION" value=" This board was developed for applications and installations where space is premium and projects are made as permanent set ups. Small, available in 3.3 V and 5 V versions, powered by ATmega328P. " x="-8.89" y="63.5" size="1.778" layer="27" rot="R180" display="off"/>
+<attribute name="MF" value="Arduino" x="-8.89" y="63.5" size="1.778" layer="27" rot="R180" display="off"/>
+<attribute name="MP" value="Arduino Pro Mini" x="-8.89" y="63.5" size="1.778" layer="27" rot="R180" display="off"/>
+<attribute name="NAME" x="22.97" y="27.45" size="1.27" layer="25" rot="R180"/>
+<attribute name="PACKAGE" value="None" x="-8.89" y="63.5" size="1.778" layer="27" rot="R180" display="off"/>
+<attribute name="PRICE" value="None" x="-8.89" y="63.5" size="1.778" layer="27" rot="R180" display="off"/>
+<attribute name="VALUE" x="22.97" y="62.95" size="1.27" layer="27" rot="R180"/>
 </element>
 </elements>
 <signals>
 <signal name="GND">
+<contactref element="MPU6050" pad="8"/>
 <contactref element="PULSOS" pad="3"/>
 <contactref element="SERVO" pad="3"/>
 <contactref element="ALIMENTACION" pad="2"/>
+<wire x1="30.48" y1="41.91" x2="30.48" y2="43.18" width="0.508" layer="1"/>
+<wire x1="30.48" y1="43.18" x2="33.02" y2="45.72" width="0.508" layer="1"/>
+<wire x1="33.02" y1="45.72" x2="33.02" y2="52.705" width="0.508" layer="1"/>
+<wire x1="33.02" y1="52.705" x2="30.48" y2="55.245" width="0.508" layer="1"/>
+<wire x1="30.48" y1="55.245" x2="33.02" y2="57.785" width="0.508" layer="1"/>
+<wire x1="33.02" y1="57.785" x2="33.02" y2="64.77" width="0.508" layer="1"/>
+<wire x1="26.67" y1="34.29" x2="26.67" y2="38.1" width="0.508" layer="1"/>
+<wire x1="26.67" y1="38.1" x2="30.48" y2="41.91" width="0.508" layer="1"/>
 <contactref element="U1" pad="JP7_9"/>
 <contactref element="S1" pad="1"/>
+<wire x1="7.6581" y1="71.12" x2="16.51" y2="62.2681" width="0.508" layer="1"/>
+<wire x1="16.51" y1="44.45" x2="21.59" y2="39.37" width="0.508" layer="1"/>
+<wire x1="16.51" y1="62.2681" x2="16.51" y2="44.45" width="0.508" layer="1"/>
 <contactref element="PROG" pad="5"/>
+<wire x1="19.05" y1="21.59" x2="20.32" y2="22.86" width="0.508" layer="1"/>
+<wire x1="21.59" y1="39.37" x2="26.67" y2="34.29" width="0.508" layer="1"/>
 <contactref element="U1" pad="JP1_5"/>
 <contactref element="U1" pad="JP1_6"/>
-<contactref element="MPU6050" pad="7"/>
-<wire x1="16.51" y1="27.94" x2="16.51" y2="21.59" width="0.8128" layer="1"/>
-<wire x1="27.94" y1="31.75" x2="29.21" y2="31.75" width="0.8128" layer="1"/>
-<wire x1="36.83" y1="39.37" x2="39.37" y2="41.91" width="0.8128" layer="1"/>
-<wire x1="39.37" y1="52.705" x2="36.83" y2="55.245" width="0.8128" layer="1"/>
-<wire x1="39.37" y1="41.91" x2="39.37" y2="52.705" width="0.8128" layer="1"/>
-<wire x1="39.37" y1="63.5" x2="39.37" y2="52.705" width="0.8128" layer="1"/>
-<wire x1="11.43" y1="71.0819" x2="11.4681" y2="71.12" width="0.8128" layer="1"/>
-<wire x1="11.4681" y1="71.12" x2="39.37" y2="71.12" width="0.8128" layer="1"/>
-<wire x1="39.37" y1="71.12" x2="39.37" y2="63.5" width="0.8128" layer="1"/>
-<wire x1="20.32" y1="38.1" x2="21.59" y2="39.37" width="0.8128" layer="1"/>
-<wire x1="21.59" y1="39.37" x2="33.02" y2="39.37" width="0.8128" layer="1"/>
-<wire x1="33.02" y1="39.37" x2="36.83" y2="39.37" width="0.8128" layer="1"/>
-<wire x1="27.94" y1="31.75" x2="33.02" y2="31.75" width="0.8128" layer="1"/>
-<wire x1="33.02" y1="31.75" x2="33.02" y2="39.37" width="0.8128" layer="1"/>
-<wire x1="19.05" y1="27.94" x2="27.94" y2="31.75" width="0" layer="19" extent="1-1"/>
-<wire x1="16.51" y1="27.94" x2="19.05" y2="27.94" width="0" layer="19" extent="1-1"/>
+<wire x1="17.78" y1="29.21" x2="20.32" y2="29.21" width="0.508" layer="1"/>
+<wire x1="20.32" y1="22.86" x2="20.32" y2="29.21" width="0.508" layer="1"/>
+<wire x1="20.32" y1="29.21" x2="26.67" y2="34.29" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="VCC">
+<contactref element="MPU6050" pad="7"/>
 <contactref element="U1" pad="JP1_4"/>
 <contactref element="PROG" pad="4"/>
-<contactref element="MPU6050" pad="8"/>
-<wire x1="13.97" y1="21.59" x2="13.97" y2="27.94" width="0.8128" layer="1"/>
-<wire x1="27.94" y1="34.29" x2="26.67" y2="33.02" width="0.8128" layer="1"/>
-<wire x1="26.67" y1="33.02" x2="25.4" y2="33.02" width="0.8128" layer="1"/>
-<wire x1="25.4" y1="33.02" x2="25.4" y2="27.94" width="0.8128" layer="1"/>
-<wire x1="25.4" y1="27.94" x2="30.48" y2="27.94" width="0.508" layer="1"/>
-<wire x1="30.48" y1="27.94" x2="30.48" y2="17.78" width="0.8128" layer="1"/>
-<wire x1="30.48" y1="17.78" x2="25.4" y2="17.78" width="0.508" layer="1"/>
-<wire x1="25.4" y1="17.78" x2="13.97" y2="17.78" width="0.8128" layer="1"/>
-<wire x1="13.97" y1="17.78" x2="13.97" y2="21.59" width="0.8128" layer="1"/>
+<wire x1="16.51" y1="21.59" x2="15.24" y2="22.86" width="0.508" layer="1"/>
+<wire x1="15.24" y1="22.86" x2="15.24" y2="29.21" width="0.508" layer="1"/>
+<wire x1="17.29603125" y1="19.6596" x2="19.53396875" y2="19.6596" width="0.508" layer="1"/>
+<wire x1="27.91596875" y1="28.0416" x2="28.6004" y2="28.72603125" width="0.508" layer="1"/>
+<wire x1="28.6004" y1="28.72603125" x2="28.6004" y2="29.69396875" width="0.508" layer="1"/>
+<wire x1="22.2504" y1="24.66476875" x2="25.62723125" y2="28.0416" width="0.508" layer="1"/>
+<wire x1="25.62723125" y1="28.0416" x2="27.91596875" y2="28.0416" width="0.508" layer="1"/>
+<wire x1="19.53396875" y1="19.6596" x2="22.2504" y2="22.37603125" width="0.508" layer="1"/>
+<wire x1="22.2504" y1="22.37603125" x2="22.2504" y2="24.66476875" width="0.508" layer="1"/>
+<wire x1="17.29603125" y1="19.6596" x2="16.51" y2="20.44563125" width="0.508" layer="1"/>
+<wire x1="16.51" y1="21.59" x2="16.51" y2="20.44563125" width="0.508" layer="1"/>
+<wire x1="26.67" y1="31.62436875" x2="26.67" y2="31.75" width="0.508" layer="1"/>
+<wire x1="28.6004" y1="29.69396875" x2="26.67" y2="31.62436875" width="0.508" layer="1"/>
 </signal>
 <signal name="SCL">
 <contactref element="MPU6050" pad="6"/>
 <contactref element="U1" pad="JP2_2"/>
-<wire x1="8.001" y1="39.243" x2="8.001" y2="31.49718125" width="0.8128" layer="1"/>
-<wire x1="8.001" y1="31.49718125" x2="2.286" y2="25.78218125" width="0.508" layer="1"/>
-<wire x1="2.286" y1="15.494" x2="3.81" y2="13.97" width="0.8128" layer="1"/>
-<wire x1="3.81" y1="13.97" x2="33.02" y2="13.97" width="0.8128" layer="1"/>
-<wire x1="33.02" y1="13.97" x2="33.02" y2="29.21" width="0.8128" layer="1"/>
-<wire x1="33.02" y1="29.21" x2="27.94" y2="29.21" width="0.8128" layer="1"/>
-<wire x1="2.286" y1="25.78218125" x2="2.286" y2="15.494" width="0.8128" layer="1"/>
+<wire x1="9.271" y1="40.513" x2="19.2278" y2="30.5562" width="0.508" layer="1"/>
+<wire x1="22.22381875" y1="29.21" x2="26.67" y2="29.21" width="0.508" layer="1"/>
+<wire x1="19.2278" y1="30.5562" x2="20.87761875" y2="30.5562" width="0.508" layer="1"/>
+<wire x1="20.87761875" y1="30.5562" x2="22.22381875" y2="29.21" width="0.508" layer="1"/>
 </signal>
 <signal name="SDA">
 <contactref element="MPU6050" pad="5"/>
 <contactref element="U1" pad="JP2_1"/>
-<wire x1="22.22381875" y1="26.67" x2="18.161" y2="30.73281875" width="0.508" layer="1"/>
-<wire x1="8.001" y1="41.783" x2="18.161" y2="31.623" width="0.8128" layer="1"/>
-<wire x1="18.161" y1="31.623" x2="18.161" y2="30.73281875" width="0.8128" layer="1"/>
-<wire x1="22.22381875" y1="26.67" x2="27.94" y2="26.67" width="0.8128" layer="1"/>
+<wire x1="6.2738" y1="29.76761875" x2="6.2738" y2="28.65238125" width="0.508" layer="1"/>
+<wire x1="10.2616" y1="20.34403125" x2="12.21603125" y2="18.3896" width="0.508" layer="1"/>
+<wire x1="6.2738" y1="28.65238125" x2="10.2616" y2="24.66458125" width="0.508" layer="1"/>
+<wire x1="10.2616" y1="24.66458125" x2="10.2616" y2="20.34403125" width="0.508" layer="1"/>
+<wire x1="9.271" y1="43.053" x2="8.63718125" y2="43.053" width="0.508" layer="1"/>
+<wire x1="8.63718125" y1="43.053" x2="7.9248" y2="42.34061875" width="0.508" layer="1"/>
+<wire x1="7.9248" y1="31.41861875" x2="6.2738" y2="29.76761875" width="0.508" layer="1"/>
+<wire x1="7.9248" y1="42.34061875" x2="7.9248" y2="31.41861875" width="0.508" layer="1"/>
+<wire x1="20.32" y1="18.3896" x2="21.59" y2="19.6596" width="0.508" layer="1"/>
+<wire x1="20.32" y1="18.3896" x2="12.21603125" y2="18.3896" width="0.508" layer="1"/>
+<wire x1="21.59" y1="19.6596" x2="24.86523125" y2="19.6596" width="0.508" layer="1"/>
+<wire x1="24.86523125" y1="19.6596" x2="25.55103125" y2="20.3454" width="0.508" layer="1"/>
+<wire x1="25.55103125" y1="20.3454" x2="27.9654" y2="20.3454" width="0.508" layer="1"/>
+<wire x1="27.9654" y1="20.3454" x2="29.21" y2="21.59" width="0.508" layer="1"/>
+<wire x1="29.21" y1="21.59" x2="29.21" y2="24.13" width="0.508" layer="1"/>
+<wire x1="29.21" y1="24.13" x2="26.67" y2="26.67" width="0.508" layer="1"/>
 </signal>
 <signal name="N$5">
 <contactref element="MPU6050" pad="4"/>
@@ -725,53 +737,65 @@ design rules under a new name.</description>
 <contactref element="U1" pad="JP6_1"/>
 <contactref element="SERVO" pad="2"/>
 <contactref element="ALIMENTACION" pad="1"/>
-<wire x1="36.83" y1="63.5" x2="36.83" y2="59.055" width="0.8128" layer="1"/>
-<wire x1="5.08" y1="30.48" x2="1.905" y2="33.655" width="0.8128" layer="1"/>
-<wire x1="1.905" y1="33.655" x2="1.905" y2="68.58" width="0.8128" layer="1"/>
-<wire x1="36.83" y1="63.5" x2="36.83" y2="68.58" width="0.8128" layer="1"/>
-<wire x1="36.83" y1="68.58" x2="1.905" y2="68.58" width="0.8128" layer="1"/>
+<wire x1="30.48" y1="64.77" x2="30.48" y2="59.055" width="0.508" layer="1"/>
+<wire x1="6.35" y1="31.75" x2="3.81" y2="34.29" width="0.508" layer="1"/>
+<wire x1="3.81" y1="34.29" x2="3.81" y2="69.85" width="0.508" layer="1"/>
+<wire x1="3.81" y1="69.85" x2="6.35" y2="72.39" width="0.508" layer="1"/>
+<wire x1="6.35" y1="72.39" x2="13.97" y2="72.39" width="0.508" layer="1"/>
+<wire x1="30.48" y1="64.77" x2="30.48" y2="65.91436875" width="0.508" layer="1"/>
+<wire x1="30.48" y1="65.91436875" x2="28.42396875" y2="67.9704" width="0.508" layer="1"/>
+<wire x1="18.3896" y1="67.9704" x2="28.42396875" y2="67.9704" width="0.508" layer="1"/>
+<wire x1="13.97" y1="72.39" x2="18.3896" y2="67.9704" width="0.508" layer="1"/>
 </signal>
 <signal name="D7">
 <contactref element="PULSOS" pad="2"/>
 <contactref element="U1" pad="JP7_3"/>
-<wire x1="20.32" y1="53.34" x2="26.67" y2="53.34" width="0.8128" layer="1"/>
-<wire x1="26.67" y1="53.34" x2="36.83" y2="43.18" width="0.8128" layer="1"/>
+<wire x1="21.59" y1="54.61" x2="30.48" y2="45.72" width="0.508" layer="1"/>
 </signal>
 <signal name="D8">
 <contactref element="PULSOS" pad="1"/>
 <contactref element="U1" pad="JP7_2"/>
-<wire x1="20.32" y1="55.88" x2="27.94" y2="55.88" width="0.8128" layer="1"/>
-<wire x1="27.94" y1="55.88" x2="36.83" y2="46.99" width="0.8128" layer="1"/>
+<wire x1="30.48" y1="49.53" x2="22.86" y2="57.15" width="0.508" layer="1"/>
+<wire x1="22.86" y1="57.15" x2="21.59" y2="57.15" width="0.508" layer="1"/>
 </signal>
 <signal name="D9">
 <contactref element="SERVO" pad="1"/>
 <contactref element="U1" pad="JP7_1"/>
-<wire x1="20.32" y1="58.42" x2="25.4" y2="63.5" width="0.8128" layer="1"/>
-<wire x1="25.4" y1="63.5" x2="34.29" y2="63.5" width="0.8128" layer="1"/>
+<wire x1="21.59" y1="59.69" x2="21.59" y2="63.5" width="0.508" layer="1"/>
+<wire x1="21.59" y1="63.5" x2="22.86" y2="64.77" width="0.508" layer="1"/>
+<wire x1="22.86" y1="64.77" x2="27.94" y2="64.77" width="0.508" layer="1"/>
 </signal>
 <signal name="RST">
 <contactref element="PROG" pad="1"/>
 <contactref element="U1" pad="JP7_10"/>
-<contactref element="U1" pad="JP1_1"/>
-<wire x1="6.35" y1="27.94" x2="6.35" y2="21.59" width="0.8128" layer="1"/>
-<wire x1="6.35" y1="27.94" x2="20.32" y2="35.56" width="0" layer="19" extent="1-1"/>
+<wire x1="8.89" y1="21.59" x2="8.89" y2="19.05" width="0.508" layer="1"/>
+<wire x1="12.7" y1="15.24" x2="30.48" y2="15.24" width="0.508" layer="1"/>
+<wire x1="30.48" y1="15.24" x2="31.75" y2="16.51" width="0.508" layer="1"/>
+<wire x1="31.75" y1="16.51" x2="31.75" y2="32.9946" width="0.508" layer="1"/>
+<wire x1="21.71563125" y1="36.83" x2="21.59" y2="36.83" width="0.508" layer="1"/>
+<wire x1="25.55103125" y1="32.9946" x2="21.71563125" y2="36.83" width="0.508" layer="1"/>
+<wire x1="31.75" y1="32.9946" x2="25.55103125" y2="32.9946" width="0.508" layer="1"/>
+<wire x1="8.89" y1="19.05" x2="12.7" y2="15.24" width="0.508" layer="1"/>
 </signal>
 <signal name="TXO">
 <contactref element="PROG" pad="2"/>
 <contactref element="U1" pad="JP1_2"/>
-<wire x1="8.89" y1="21.59" x2="8.89" y2="27.94" width="0.8128" layer="1"/>
+<wire x1="11.43" y1="21.59" x2="11.43" y2="27.94" width="0.508" layer="1"/>
+<wire x1="11.43" y1="27.94" x2="10.16" y2="29.21" width="0.508" layer="1"/>
 </signal>
 <signal name="RXI">
 <contactref element="PROG" pad="3"/>
 <contactref element="U1" pad="JP1_3"/>
-<wire x1="11.43" y1="21.59" x2="11.43" y2="27.94" width="0.8128" layer="1"/>
+<wire x1="12.7" y1="29.21" x2="12.7" y2="25.4" width="0.508" layer="1"/>
+<wire x1="13.97" y1="21.59" x2="13.97" y2="24.13" width="0.508" layer="1"/>
+<wire x1="13.97" y1="24.13" x2="12.7" y2="25.4" width="0.508" layer="1"/>
 </signal>
 <signal name="D5">
 <contactref element="U1" pad="JP7_5"/>
 <contactref element="S1" pad="2"/>
-<wire x1="11.43" y1="66.0781" x2="16.51" y2="60.9981" width="0.8128" layer="1"/>
-<wire x1="16.51" y1="60.9981" x2="16.51" y2="48.26" width="0.8128" layer="1"/>
-<wire x1="16.51" y1="48.26" x2="20.32" y2="48.26" width="0.8128" layer="1"/>
+<wire x1="12.6619" y1="71.12" x2="17.78" y2="66.0019" width="0.508" layer="1"/>
+<wire x1="17.78" y1="66.0019" x2="17.78" y2="53.34" width="0.508" layer="1"/>
+<wire x1="17.78" y1="53.34" x2="21.59" y2="49.53" width="0.508" layer="1"/>
 </signal>
 <signal name="N$11">
 <contactref element="U1" pad="JP7_12"/>
