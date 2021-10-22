@@ -14,14 +14,14 @@
 #define IN 7              // Pin de entrada para abrir la puerta |activo en bajo|
 #define SERVO 9            // Pin de señal del servomotor
 
-#define Open true         // Definición de Open como TRUE para simplificar la interpretación del código
+#define OPEN true         // Definición de OPEN como TRUE para simplificar la interpretación del código
 
 Servo compuerta;                          // objeto de tipo Servo
 MPU6050 inclinometro;                     // objeto de tipo inclinometro (dirección I2C predeterminada)
 
 bool conectado = false,                           // representa la conexión del MPU con el arduino (checada al iniciar el Arduino)
      calib_stat = false,                          // variable que ayuda al debouncing del botón de calibración
-     puerta = Open;                               // estado inicial de la puerta
+     puerta = OPEN;                               // estado inicial de la puerta
 uint8_t anguloLimite = 30;                        // Angulo permisible respecto a la vertical
 uint8_t desplazamientoMIN = 0;                    // Angulo límite mínimo respecto a la vertical
 uint8_t desplazamientoMAX = anguloLimite;         // Angulo límite máximo respecto a la vertical
@@ -57,18 +57,19 @@ void setup() { //------------------------------------------------------SETUP----
   compuerta.write(anguloAbierto);
   
   Serial.begin(38400);
-  Serial.println("Encendido programa seguridad para maquina de peluches.");
+  Serial.println("Iniciando programa seguridad para maquina de garra.");
   conectado = inclinometro.testConnection();
   inclinometro.initialize();
+  Serial.println("Inclinometro inicializado.");
   inclinometro.setFullScaleAccelRange(MPU6050_ACCEL_FS_16);          //Reduce la sensibilidad del acelerómetro
-//  compuerta.detach();
-   //leemos los valores de los ángulos límite guardados en la EEPROM
-
-  Serial.println("Programa inicializado.");
+  Serial.println("Sensibilidad ajustada.");
   Serial.print("calibración actual: ");
   Serial.print(desplazamientoMIN);
   Serial.print("\t");
-  Serial.print(desplazamientoMAX);
+  Serial.println(desplazamientoMAX);
+
+  Serial.println("Setup terminado.");
+   
    
 } //---------------------------------------------------------------FIN SETUP----------------------------------//
 
@@ -95,10 +96,10 @@ void loop() {//------------------------------------------------------LOOP-------
   }
   
 
-  if (puerta == Open){                                                            //Si la compuerta está abierta
+  if (puerta == OPEN){                                                            //Si la compuerta está abierta
     if(!enRango(&inclinometro,desplazamientoMIN, desplazamientoMAX,500) && digitalRead(IN)){      // y está inclinada y sin el pulso de abrir conectado
       compuerta.attach(SERVO);                                                    //Da corriente al servo   
-      compuerta.write(anguloCerrado); puerta = !Open; Serial.println("cerrando");    //CIERRA LA COMPUERTA                 
+      compuerta.write(anguloCerrado); puerta = !OPEN; Serial.println("cerrando");    //CIERRA LA COMPUERTA                 
       if (t_detachC == 0){
         t_detachC = t_act;
       }
@@ -107,7 +108,7 @@ void loop() {//------------------------------------------------------LOOP-------
   }
   
   
-  if (puerta != Open){                                      //Si la compuerta está abierta
+  if (puerta != OPEN){                                      //Si la compuerta está abierta
       if (t_cierre == 0){
         t_cierre = t_act;
       }
@@ -125,7 +126,7 @@ void loop() {//------------------------------------------------------LOOP-------
   //Abre la puerta si recibe el comando
   if(!digitalRead(IN)){                              
     compuerta.attach(SERVO); 
-    compuerta.write(anguloAbierto); puerta = Open; Serial.println("abriendo");    //ABRIR LA PUERTA               
+    compuerta.write(anguloAbierto); puerta = OPEN; Serial.println("abriendo");    //ABRIR LA PUERTA               
     if (t_detachO == 0){                        //Sólo inicia el detach en el flanco del pulso
       t_detachO = t_act;
     }
