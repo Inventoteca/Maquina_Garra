@@ -680,15 +680,7 @@ design rules under a new name.</description>
 <signal name="VCC">
 <contactref element="U1" pad="JP1_4"/>
 <contactref element="PROG" pad="4"/>
-<contactref element="MPU6050" pad="8"/>
 <wire x1="13.97" y1="21.59" x2="13.97" y2="27.94" width="0.8128" layer="1"/>
-<wire x1="27.94" y1="34.29" x2="25.4" y2="34.29" width="0.8128" layer="1"/>
-<wire x1="25.4" y1="34.29" x2="25.4" y2="27.94" width="0.8128" layer="1"/>
-<wire x1="25.4" y1="27.94" x2="30.48" y2="27.94" width="0.508" layer="1"/>
-<wire x1="30.48" y1="27.94" x2="30.48" y2="17.78" width="0.8128" layer="1"/>
-<wire x1="30.48" y1="17.78" x2="25.4" y2="17.78" width="0.508" layer="1"/>
-<wire x1="25.4" y1="17.78" x2="13.97" y2="17.78" width="0.8128" layer="1"/>
-<wire x1="13.97" y1="17.78" x2="13.97" y2="21.59" width="0.8128" layer="1"/>
 </signal>
 <signal name="SCL">
 <contactref element="MPU6050" pad="6"/>
@@ -697,9 +689,12 @@ design rules under a new name.</description>
 <wire x1="8.001" y1="31.49718125" x2="2.286" y2="25.78218125" width="0.508" layer="1"/>
 <wire x1="2.286" y1="15.494" x2="3.81" y2="13.97" width="0.8128" layer="1"/>
 <wire x1="3.81" y1="13.97" x2="33.02" y2="13.97" width="0.8128" layer="1"/>
-<wire x1="33.02" y1="13.97" x2="33.02" y2="29.21" width="0.8128" layer="1"/>
-<wire x1="33.02" y1="29.21" x2="27.94" y2="29.21" width="0.8128" layer="1"/>
+<wire x1="33.02" y1="13.97" x2="33.02" y2="30.099" width="0.8128" layer="1"/>
+<wire x1="33.02" y1="30.099" x2="29.591" y2="30.099" width="0.8128" layer="1"/>
 <wire x1="2.286" y1="25.78218125" x2="2.286" y2="15.494" width="0.8128" layer="1"/>
+<wire x1="29.591" y1="30.099" x2="28.575" y2="29.083" width="0.8128" layer="1"/>
+<wire x1="28.575" y1="29.083" x2="28.067" y2="29.083" width="0.8128" layer="1"/>
+<wire x1="28.067" y1="29.083" x2="27.94" y2="29.21" width="0.8128" layer="1"/>
 </signal>
 <signal name="SDA">
 <contactref element="MPU6050" pad="5"/>
@@ -757,18 +752,21 @@ design rules under a new name.</description>
 <contactref element="PROG" pad="1"/>
 <contactref element="U1" pad="JP7_10"/>
 <contactref element="U1" pad="JP1_1"/>
-<wire x1="6.35" y1="27.94" x2="6.35" y2="21.59" width="0.8128" layer="1"/>
 <wire x1="6.35" y1="27.94" x2="20.32" y2="35.56" width="0" layer="19" extent="1-1"/>
-</signal>
-<signal name="TXO">
-<contactref element="PROG" pad="2"/>
-<contactref element="U1" pad="JP1_2"/>
-<wire x1="8.89" y1="21.59" x2="8.89" y2="27.94" width="0.8128" layer="1"/>
+<wire x1="6.35" y1="21.59" x2="6.35" y2="27.94" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="RXI">
 <contactref element="PROG" pad="3"/>
 <contactref element="U1" pad="JP1_3"/>
 <wire x1="11.43" y1="21.59" x2="11.43" y2="27.94" width="0.8128" layer="1"/>
+<contactref element="MPU6050" pad="8"/>
+<wire x1="27.94" y1="34.29" x2="25.4" y2="34.29" width="0.8128" layer="1"/>
+<wire x1="25.4" y1="34.29" x2="25.4" y2="27.94" width="0.8128" layer="1"/>
+<wire x1="25.4" y1="27.94" x2="30.48" y2="27.94" width="0.508" layer="1"/>
+<wire x1="30.48" y1="27.94" x2="30.48" y2="17.78" width="0.8128" layer="1"/>
+<wire x1="30.48" y1="17.78" x2="25.4" y2="17.78" width="0.508" layer="1"/>
+<wire x1="25.4" y1="17.78" x2="11.43" y2="17.78" width="0.8128" layer="1"/>
+<wire x1="11.43" y1="17.78" x2="11.43" y2="21.59" width="0.8128" layer="1"/>
 </signal>
 <signal name="D5">
 <contactref element="U1" pad="JP7_5"/>
@@ -785,6 +783,11 @@ design rules under a new name.</description>
 </signal>
 <signal name="GND_1">
 <contactref element="U1" pad="JP6_2"/>
+</signal>
+<signal name="TXO1">
+<contactref element="U1" pad="JP1_2"/>
+<contactref element="PROG" pad="2"/>
+<wire x1="8.89" y1="21.59" x2="8.89" y2="27.94" width="0.8128" layer="1"/>
 </signal>
 </signals>
 <mfgpreviewcolors>
