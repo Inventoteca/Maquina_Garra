@@ -22,7 +22,8 @@ MPU6050 inclinometro;                     // objeto de tipo inclinometro (direcc
 bool conectado = false,                           // representa la conexión del MPU con el arduino (checada al iniciar el Arduino)
      calib_stat = false,                          // variable que ayuda al debouncing del botón de calibración
      puerta = OPEN;                               // estado inicial de la puerta
-uint8_t anguloLimite = 30;                        // Angulo permisible respecto a la vertical
+uint8_t tolerancia = 2;                           // nivel de tolerancia 0,1 o 2 
+uint8_t anguloLimite = 35;                        // Angulo permisible respecto a la vertical
 uint8_t desplazamientoMIN = 0;                    // Angulo límite mínimo respecto a la vertical
 uint8_t desplazamientoMAX = anguloLimite;         // Angulo límite máximo respecto a la vertical
 uint8_t compens = 0;                              //Angulo ajustable para que el servo coloque la puerta en una posición exacta
@@ -40,15 +41,26 @@ unsigned long t_cierre = 0,               //Variables para el control de tiempos
               
 
 void setup() { //------------------------------------------------------SETUP----------------------------------//
+  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, LOW);
   //Leemos los valores de desplazamiento mínimo y máximo de la EEPROM
-  EEPROM.get(0,desplazamientoMIN);
-  EEPROM.get(8, desplazamientoMAX);
-  if(desplazamientoMAX == 255 || desplazamientoMIN == 255){   //Si no hay nada escrito en EEPROM usa valores default
-    desplazamientoMAX = anguloLimite;
-    desplazamientoMIN = 0;
-    EEPROM.put(0,desplazamientoMIN);
-    EEPROM.put(8,desplazamientoMAX);
+  // EEPROM.get(0,desplazamientoMIN);
+  // EEPROM.get(8, desplazamientoMAX);
+  EEPROM.get(16, tolerancia);
+  // if(desplazamientoMAX == 255 || desplazamientoMIN == 255){   //Si no hay nada escrito en EEPROM usa valores default
+  //   desplazamientoMAX = anguloLimite;
+  //   desplazamientoMIN = 0;
+  //   EEPROM.put(0,desplazamientoMIN);
+  //   EEPROM.put(8,desplazamientoMAX);
+  // }
+
+  if(tolerancia != 0 || tolerancia != 1 || tolerancia != 2){
+    tolerancia  = 2;
+    parpadeo(tolerancia+1);
+    ajustarLimites();
+    EEPROM.put(16, tolerancia);
   }
+
   pinMode(CALIB, INPUT_PULLUP);
   pinMode(IN, INPUT_PULLUP);
   pinMode(OUT, OUTPUT);
@@ -86,13 +98,14 @@ void loop() {//------------------------------------------------------LOOP-------
   
   //Debouncing simple para el botón de calibración
   if (!digitalRead(CALIB) && !calib_stat){
-    Serial.println("Calibracion iniciada");
-    calibrarReferencia(&inclinometro);
+    Serial.println("Ajustando sensibilidad");
+    cambiarTolerancia();
+    //calibrarReferencia(&inclinometro);
     calib_stat = true;
   }
   if(digitalRead(CALIB) && calib_stat){
     calib_stat = false;
-    Serial.println("Calibracion terminada");
+    //Serial.println("Calibracion terminada");
   }
   
 
@@ -148,7 +161,7 @@ void loop() {//------------------------------------------------------LOOP-------
     
 }//---------------------------------------------------------------FIN LOOP----------------------------------//
 
-void calibrarReferencia(MPU6050* inclinometro){
+void calibrarReferencia(MPU6050* inclinometro){ ////////////////////////en desuso ///////////////////////////
   // Obtiene las componentes del vector actual de la gravedad
   Serial.println("nueva referencia");
   gZ = inclinometro->getAccelerationZ();
@@ -170,7 +183,66 @@ void calibrarReferencia(MPU6050* inclinometro){
   EEPROM.put(0,desplazamientoMIN);
   EEPROM.put(8,desplazamientoMAX);
 
-} //Fin calibrarReferencia()
+} //Fin calibrarReferencia()////////////////////////////////////////////////////////////////////////////////////////
+
+void cambiarTolerancia(){
+  switch (tolerancia)
+  {
+  case 0:
+    tolerancia  = 1;
+    parpadeo(1);
+    break;
+  case 1:
+    tolerancia  = 2;
+    parpadeo(2);
+    break;
+  case 2:
+    tolerancia  = 0;
+    parpadeo(3);
+    break;
+  
+  default:
+    tolerancia = 2;
+    parpadeo(1);
+    break;
+  }
+  EEPROM.put(16, tolerancia);
+  ajustarLimites();
+  Serial.print("calibración actual: ");
+  Serial.print(desplazamientoMIN);
+  Serial.print("\t");
+  Serial.println(desplazamientoMAX);
+}
+
+void ajustarLimites(){
+  desplazamientoMIN = 0;
+  switch (tolerancia)
+  {
+  case 0:
+    anguloLimite = 15;
+    break;
+  case 1:
+    anguloLimite = 25;
+    break;
+  case 2:
+    anguloLimite = 35;
+    break;
+  
+  default:
+    anguloLimite = 35;
+    break;
+  }
+  desplazamientoMAX = anguloLimite;
+}
+
+void parpadeo(uint8_t veces){
+  for(int i = 0; i < veces; i++ ){
+    delay(500);
+    digitalWrite(LED_BUILTIN, HIGH);
+    delay(500);
+    digitalWrite(LED_BUILTIN, LOW);
+  }
+}
 
 bool enRango(MPU6050 *inclinometro , uint8_t limiteMIN, uint8_t limiteMAX, uint16_t t_tolerancia) {
   gZ = inclinometro->getAccelerationZ(); 
